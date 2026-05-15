@@ -1,0 +1,19 @@
+
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.env
+*.sqlite3
+staticfiles/
+static/.webassets-cache/
+
+# Windows / editor files
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+

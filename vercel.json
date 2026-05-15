@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "atemksam.settings"
+  },
+  "builds": [
+    {
+      "src": "atemksam/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.12",
+        "maxLambdaSize": "15mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/(static|media)/.*",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "atemksam/wsgi.py"
+    }
+  ]
+}
