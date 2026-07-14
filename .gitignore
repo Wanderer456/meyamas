@@ -46,3 +46,5 @@ htmlcov/
 
 # Node (if frontend tooling exists later)
 node_modules/
+.vercel
+.env*
