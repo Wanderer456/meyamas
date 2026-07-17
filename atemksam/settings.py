@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 def config(key, default=None, cast=str):
     value = os.environ.get(key, default)
@@ -11,21 +12,18 @@ def config(key, default=None, cast=str):
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "CHANGE_THIS_IN_RENDER"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    ".onrender.com",
+    "meyamas.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://meyamask.onrender.com",
+    "https://meyamas.onrender.com",
 ]
 
 INSTALLED_APPS = [
@@ -69,33 +67,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'atemksam.wsgi.application'
 
-if config('DATABASE_URL', default='').startswith('postgres'):
-    import dj_database_url
-
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
-            conn_max_age=600
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=False,
+    )
+}
 
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    BASE_DIR / 'static'
 ]
 
 STATICFILES_STORAGE = (
@@ -109,12 +102,21 @@ SECURE_PROXY_SSL_HEADER = (
     'https'
 )
 
-SECURE_SSL_REDIRECT = False
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+else:
+    SECURE_SSL_REDIRECT = False
 
 SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = "Lax"
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
 X_FRAME_OPTIONS = 'DENY'
 
 SECURE_HSTS_SECONDS = 31536000
