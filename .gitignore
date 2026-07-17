@@ -48,3 +48,6 @@ htmlcov/
 node_modules/
 .vercel
 .env*
+.env
+__pycache__/
+*.pyc
